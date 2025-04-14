@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="32" height="32" rx="8" fill="#0066cc"/>
+    
+    <!-- Abstract line chart -->
+    <path d="M6 22 L10 18 L14 20 L18 12 L22 16 L26 8" 
+          stroke="white" 
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"/>
+          
+    <!-- Dots -->
+    <circle cx="10" cy="18" r="2" fill="white"/>
+    <circle cx="18" cy="12" r="2" fill="white"/>
+    <circle cx="26" cy="8" r="2" fill="white"/>
+    
+    <!-- Mean line -->
+    <line x1="6" y1="15" x2="26" y2="15" 
+          stroke="white" 
+          stroke-width="1.5" 
+          stroke-dasharray="2 2"
+          opacity="0.6"/>
+</svg>

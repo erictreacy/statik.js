@@ -1,18 +1,271 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Statik.js Playground</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statik.js - A Lightweight Statistics Library</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/github.min.css">
 </head>
 <body>
-  <h1>Statik.js Playground</h1>
-  <textarea id="editor">// Type your code here, e.g.:
-mean([1,2,3,4,5])</textarea>
-  <button id="run">Run</button>
-  <pre id="output"></pre>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="logo.svg" alt="Statik.js logo" width="32" height="32">
+                    <h1>Statik.js</h1>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#playground">Playground</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li class="nav-section">
+                        <span>Methods</span>
+                        <ul>
+                            <li><a href="#basic">Basic Statistics</a>
+                                <ul>
+                                    <li><a href="#mean">mean()</a></li>
+                                    <li><a href="#median">median()</a></li>
+                                    <li><a href="#mode">mode()</a></li>
+                                    <li><a href="#geometricMean">geometricMean()</a></li>
+                                    <li><a href="#harmonicMean">harmonicMean()</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#advanced">Advanced Statistics</a>
+                                <ul>
+                                    <li><a href="#variance">variance()</a></li>
+                                    <li><a href="#stddev">stddev()</a></li>
+                                    <li><a href="#quartiles">quartiles()</a></li>
+                                    <li><a href="#iqr">iqr()</a></li>
+                                    <li><a href="#outliers">outliers()</a></li>
+                                    <li><a href="#skewness">skewness()</a></li>
+                                    <li><a href="#kurtosis">kurtosis()</a></li>
+                                    <li><a href="#correlation">correlation()</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#visualization">Visualization</a>
+                                <ul>
+                                    <li><a href="#histogram">histogram()</a></li>
+                                    <li><a href="#boxplot">boxplot()</a></li>
+                                    <li><a href="#scatter">scatter()</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-section">
+                <h3>Optimization Methods</h3>
+                <button onclick="loadExample('optimization-gradient-descent')">Gradient Descent</button>
+                <button onclick="loadExample('optimization-newton-raphson')">Newton-Raphson</button>
+                <button onclick="loadExample('optimization-conjugate-gradient')">Conjugate Gradient</button>
+            </div>
+            <div class="sidebar-section">
+                <h3>Neural Networks</h3>
+                <button onclick="loadExample('neural-network-xor')">XOR Problem</button>
+                <button onclick="loadExample('neural-network-mnist')">MNIST Digits</button>
+                <button onclick="loadExample('neural-network-regression')">Regression</button>
+            </div>
+        </aside>
 
-  <script type="module" src="editor.js"></script>
+        <main class="content">
+            <div class="content-wrapper">
+                <section id="playground" class="playground-section">
+                    <h2>Interactive Playground</h2>
+                    <div class="playground-container">
+                        <div class="playground-layout">
+                            <div class="editor-side">
+                                <div class="editor-container">
+                                    <textarea id="editor">// Sample dataset
+const data = [1, 2, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 10, 11, 12];
+
+// Calculate basic statistics
+console.log('Basic Statistics:');
+console.log('Mean:', stats.mean(data));
+console.log('Median:', stats.median(data));
+console.log('Mode:', stats.mode(data));
+
+// Calculate advanced statistics
+console.log('\nAdvanced Statistics:');
+console.log('Standard Deviation:', stats.stddev(data));
+console.log('Quartiles:', stats.quartiles(data));
+console.log('IQR:', stats.iqr(data));
+console.log('Skewness:', stats.skewness(data));
+console.log('Kurtosis:', stats.kurtosis(data));
+
+// Create a histogram
+stats.visualize('histogram', {
+    values: data,
+    label: 'Distribution'
+}, 'chart');
+
+// Get summary statistics
+console.log('\nSummary:', stats.summary(data));</textarea>
+                                </div>
+                                <div class="controls">
+                                    <div class="controls-left">
+                                        <div class="file-upload">
+                                            <input type="file" id="csvFile" accept=".csv" />
+                                            <div class="file-upload-button">
+                                                Upload CSV
+                                            </div>
+                                            <span class="file-name" id="fileName"></span>
+                                        </div>
+                                    </div>
+                                    <button id="run" class="run-button">Run Code</button>
+                                </div>
+                            </div>
+                            <div class="output-side">
+                                <div class="output-tabs">
+                                    <button class="tab-button active" data-tab="console">Console</button>
+                                    <button class="tab-button" data-tab="chart">Chart</button>
+                                </div>
+                                <div class="output-container">
+                                    <div id="console-tab" class="tab-pane active">
+                                        <pre id="output"></pre>
+                                    </div>
+                                    <div id="chart-tab" class="tab-pane">
+                                        <canvas id="chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="method-sections">
+                    <section id="installation">
+                        <h2>Installation</h2>
+                        <pre><code>import Statik from './statik.js';</code></pre>
+                    </section>
+
+                    <section id="basic">
+                        <h2>Basic Statistics</h2>
+                        
+                        <div id="mean" class="method">
+                            <h3>mean(arr)</h3>
+                            <p>Calculates the arithmetic mean of an array.</p>
+                            <pre><code>Statik.mean([1, 2, 3, 4, 5]); // Returns 3</code></pre>
+                        </div>
+
+                        <div id="median" class="method">
+                            <h3>median(arr)</h3>
+                            <p>Calculates the median value of an array.</p>
+                            <pre><code>Statik.median([1, 2, 3, 4, 5]); // Returns 3</code></pre>
+                        </div>
+
+                        <div id="mode" class="method">
+                            <h3>mode(arr)</h3>
+                            <p>Finds the mode(s) of an array.</p>
+                            <pre><code>Statik.mode([1, 2, 2, 3]); // Returns [2]</code></pre>
+                        </div>
+
+                        <div id="geometricMean" class="method">
+                            <h3>geometricMean(arr)</h3>
+                            <p>Calculates the geometric mean of an array.</p>
+                            <pre><code>Statik.geometricMean([1, 2, 3, 4, 5]); // Returns 2.605171084697352</code></pre>
+                        </div>
+
+                        <div id="harmonicMean" class="method">
+                            <h3>harmonicMean(arr)</h3>
+                            <p>Calculates the harmonic mean of an array.</p>
+                            <pre><code>Statik.harmonicMean([1, 2, 3, 4, 5]); // Returns 2.1897810218978103</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="advanced">
+                        <h2>Advanced Statistics</h2>
+                        
+                        <div id="variance" class="method">
+                            <h3>variance(arr, sample = false)</h3>
+                            <p>Calculates the variance of an array. Set sample=true for sample variance.</p>
+                            <pre><code>Statik.variance([1, 2, 3, 4, 5]); // Population variance
+Statik.variance([1, 2, 3, 4, 5], true); // Sample variance</code></pre>
+                        </div>
+
+                        <div id="stddev" class="method">
+                            <h3>stddev(arr, sample = false)</h3>
+                            <p>Calculates the standard deviation. Set sample=true for sample standard deviation.</p>
+                            <pre><code>Statik.stddev([1, 2, 3, 4, 5]); // Population std dev</code></pre>
+                        </div>
+
+                        <div id="quartiles" class="method">
+                            <h3>quartiles(arr)</h3>
+                            <p>Returns an object with Q1, Q2 (median), and Q3 values.</p>
+                            <pre><code>Statik.quartiles([1, 2, 3, 4, 5]); // Returns {q1: 1.5, q2: 3, q3: 4.5}</code></pre>
+                        </div>
+
+                        <div id="iqr" class="method">
+                            <h3>iqr(arr)</h3>
+                            <p>Calculates the interquartile range (IQR).</p>
+                            <pre><code>Statik.iqr([1, 2, 3, 4, 5]); // Returns 3</code></pre>
+                        </div>
+
+                        <div id="outliers" class="method">
+                            <h3>outliers(arr)</h3>
+                            <p>Finds the outliers in an array.</p>
+                            <pre><code>Statik.outliers([1, 2, 3, 4, 5, 100]); // Returns [100]</code></pre>
+                        </div>
+
+                        <div id="skewness" class="method">
+                            <h3>skewness(arr)</h3>
+                            <p>Measures the asymmetry of the distribution.</p>
+                            <pre><code>Statik.skewness([1, 2, 3, 4, 10]); // Returns positive value (right-skewed)</code></pre>
+                        </div>
+
+                        <div id="kurtosis" class="method">
+                            <h3>kurtosis(arr)</h3>
+                            <p>Measures the tailedness of the distribution.</p>
+                            <pre><code>Statik.kurtosis([1, 2, 3, 4, 5]); // Returns 1.7</code></pre>
+                        </div>
+
+                        <div id="correlation" class="method">
+                            <h3>correlation(arr1, arr2)</h3>
+                            <p>Calculates the sample correlation coefficient between two arrays.</p>
+                            <pre><code>Statik.correlation([1, 2, 3], [2, 4, 6]); // Returns 1 (perfect correlation)</code></pre>
+                        </div>
+                    </section>
+
+                    <section id="visualization">
+                        <h2>Visualization</h2>
+                        
+                        <div id="histogram" class="method">
+                            <h3>histogram(values, options, element)</h3>
+                            <p>Creates a histogram chart.</p>
+                            <pre><code>Statik.histogram([1, 2, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 10, 11, 12], {
+    label: 'Distribution'
+}, 'chart');</code></pre>
+                        </div>
+
+                        <div id="boxplot" class="method">
+                            <h3>boxplot(values, options, element)</h3>
+                            <p>Creates a boxplot chart.</p>
+                            <pre><code>Statik.boxplot([1, 2, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 10, 11, 12], {
+    label: 'Distribution'
+}, 'chart');</code></pre>
+                        </div>
+
+                        <div id="scatter" class="method">
+                            <h3>scatter(arr1, arr2, options, element)</h3>
+                            <p>Creates a scatter plot chart.</p>
+                            <pre><code>Statik.scatter([1, 2, 3], [2, 4, 6], {
+    label: 'Correlation'
+}, 'chart');</code></pre>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="../statik.js"></script>
+    <script type="module" src="editor.js"></script>
 </body>
 </html>
